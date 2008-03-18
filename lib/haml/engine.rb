@@ -73,7 +73,13 @@ module Haml
         :filename => '(haml)',
         :ugly => false,
         :format => :xhtml,
-        :escape_html => false
+        :escape_html => false,
+
+        # This option is intentionally not mentioned in the RDoc.
+        # It gives a proc that will be evaled in the engine context
+        # before the precompilation is done.
+        # It's meant for internal use.
+        :before_precompile => lambda {}
       }
       @options.rec_merge! options
 
@@ -103,6 +109,8 @@ END
       @template_tabs = 0
       @index = 0
       @flat_spaces = -1
+
+      instance_eval &@options[:before_precompile]
 
       precompile
     rescue Haml::Error

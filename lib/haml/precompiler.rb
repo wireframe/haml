@@ -38,6 +38,9 @@ module Haml
     # Designates a block of filtered text.
     FILTER          = ?:
 
+    # Designates a call to a partial template.
+    PARTIAL         = ?@
+
     # Designates a non-parsed line. Not actually a character.
     PLAIN_TEXT      = -1
 
@@ -54,7 +57,8 @@ module Haml
       FLAT_SCRIPT,
       SILENT_SCRIPT,
       ESCAPE,
-      FILTER
+      FILTER,
+      PARTIAL
     ]
 
     # The value of the character that designates that a line is part
@@ -223,6 +227,7 @@ END
         return push_script(text[2..-1].strip, false) if text[1] == SCRIPT
         push_plain text
       when ESCAPE; push_plain text[1..-1]
+      when PARTIAL; push_partial text[1..-1]
       else push_plain text
       end
     end
@@ -349,6 +354,13 @@ END
       
       raise SyntaxError.new("Tag has no content.") if text.empty?
       push_script(text, true)
+    end
+
+    def push_partial(location)
+      location.strip!
+      output_tabs = @output_tabs
+      set_tabs = lambda { |engine| @output_tabs = output_tabs }
+      push_silent Haml::Engine.new(File.read(location), :before_precompile => set_tabs).precompiled
     end
 
     def start_haml_comment
