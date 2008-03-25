@@ -744,7 +744,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #                               This is used solely for reporting errors,
 #                               and is automatically set when using Rails or Merb.
 #
-# [<tt>:load_paths</tt>]        An array of filesystem paths which should be searched
+# [<tt>:load_paths</tt>]        An array of filesystem paths which will be searched
 #                               for Sass templates imported with the "@import" directive.
 #                               This defaults to the working directory and, in Rails or Merb,
 #                               whatever <tt>:template_location</tt> is.

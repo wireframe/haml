@@ -39,7 +39,7 @@ module Haml
     FILTER          = ?:
 
     # Designates a call to a partial template.
-    PARTIAL         = ?@
+    PARTIAL         = ?*
 
     # Designates a non-parsed line. Not actually a character.
     PLAIN_TEXT      = -1
@@ -358,6 +358,7 @@ END
 
     def push_partial(location)
       location.strip!
+      location = Haml.find_file_to_load @options[:load_paths], "_#{location}.haml", "#{location}.haml", location
       output_tabs = @output_tabs
       set_tabs = lambda { |engine| @output_tabs = output_tabs }
       push_silent Haml::Engine.new(File.read(location), :before_precompile => set_tabs).precompiled

@@ -55,9 +55,6 @@ module Haml
     #
     def initialize(template, options = {})
       @options = {
-        :suppress_eval => false,
-        :attr_wrapper => "'",
-
         # Don't forget to update the docs in lib/haml.rb if you update these
         :autoclose => %w[meta img link br hr input area param col base],
         :preserve => %w[textarea pre],
@@ -74,6 +71,9 @@ module Haml
         :ugly => false,
         :format => :xhtml,
         :escape_html => false,
+        :suppress_eval => false,
+        :attr_wrapper => "'",
+        :load_paths => ['.'],
 
         # This option is intentionally not mentioned in the RDoc.
         # It gives a proc that will be evaled in the engine context

@@ -855,6 +855,11 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #                           so it's really only useful for the user to assign
 #                           when dealing with Haml programatically.
 #
+# [<tt>:load_paths</tt>]    An array of filesystem paths which will be searched
+#                           for Haml templates imported with *.
+#                           This defaults to the working directory and, in Rails or Merb,
+#                           the appropriate view directories.
+#
 # [<tt>:filters</tt>]       A hash of filters that can be applied to Haml code.
 #                           The keys are the string names of the filters;
 #                           the values are references to the classes of the filters.
