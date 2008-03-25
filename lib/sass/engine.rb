@@ -358,7 +358,8 @@ module Sass
         return filename
       end
 
-      new_filename = find_full_path("#{filename}.sass", load_paths)
+
+      new_filename = Haml::find_file_to_load(load_paths, "_#{filename}.sass", "#{filename}.sass")
 
       if new_filename.nil?
         if was_sass
@@ -369,18 +370,6 @@ module Sass
       else
         new_filename
       end
-    end
-
-    def self.find_full_path(filename, load_paths)
-      load_paths.each do |path|
-        ["_#{filename}", filename].each do |name|
-          full_path = File.join(path, name)
-          if File.readable?(full_path)
-            return full_path
-          end
-        end
-      end
-      nil
     end
   end
 end

@@ -890,6 +890,20 @@ module Haml
   def self.init_rails(binding)
     %w[haml/template sass sass/plugin].each(&method(:require))
   end
+
+  # This method is used by both Haml and Sass to load imports/partials.
+  # It looks for files in load paths.
+  def self.find_file_to_load(load_paths, *filenames) # :nodoc:
+    load_paths.each do |path|
+      filenames.each do |name|
+        full_path = File.join(path, name)
+        if File.readable?(full_path)
+          return full_path
+        end
+      end
+    end
+    nil
+  end
 end
 
 require 'haml/engine'
