@@ -5,7 +5,6 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.rubyforge_project = gem.name = "haml"
-    gem.version = '2.1.0'
     gem.summary = "An elegant, structured XHTML/XML templating engine.\nComes with Sass, a similar CSS templating engine."
     gem.homepage = "http://github.com/wireframe/haml"
     gem.authors = ['Nathan Weizenbaum', 'Hampton Catlin']
