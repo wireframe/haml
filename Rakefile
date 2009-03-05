@@ -1,6 +1,31 @@
 require 'rubygems'
 require 'rake'
 
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.rubyforge_project = gem.name = "haml"
+    gem.version = '2.1.0'
+    gem.summary = "An elegant, structured XHTML/XML templating engine.\nComes with Sass, a similar CSS templating engine."
+    gem.homepage = "http://github.com/wireframe/haml"
+    gem.authors = ['Nathan Weizenbaum', 'Hampton Catlin']
+    gem.email = 'haml@googlegroups.com'
+    gem.description = <<-END
+        Haml (HTML Abstraction Markup Language) is a layer on top of XHTML or XML
+        that's designed to express the structure of XHTML or XML documents
+        in a non-repetitive, elegant, easy way,
+        using indentation rather than closing tags
+        and allowing Ruby to be embedded with ease.
+        It was originally envisioned as a plugin for Ruby on Rails,
+        but it can function as a stand-alone templating engine.
+      END
+    
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
+
 # ----- Benchmarking -----
 
 desc <<END
@@ -31,53 +56,6 @@ end
 Rake::Task[:test].send(:add_comment, <<END)
 To run with an alternate version of Rails, make test/rails a symlink to that version.
 END
-
-# ----- Packaging -----
-
-require 'rake/gempackagetask'
-load    'haml.gemspec'
-
-Rake::GemPackageTask.new(HAML_GEMSPEC) do |pkg|
-  if Rake.application.top_level_tasks.include?('release')
-    pkg.need_tar_gz  = true
-    pkg.need_tar_bz2 = true
-    pkg.need_zip     = true
-  end
-end
-
-task :revision_file do
-  require 'lib/haml'
-
-  if Haml.version[:rev] && !Rake.application.top_level_tasks.include?('release')
-    File.open('REVISION', 'w') { |f| f.puts Haml.version[:rev] }
-  elsif Rake.application.top_level_tasks.include?('release')
-    File.open('REVISION', 'w') { |f| f.puts "(release)" }
-  else
-    File.open('REVISION', 'w') { |f| f.puts "(unknown)" }
-  end
-end
-Rake::Task[:package].prerequisites.insert(0, :revision_file)
-
-# We also need to get rid of this file after packaging.
-at_exit { File.delete('REVISION') rescue nil }
-
-desc "Install Haml as a gem."
-task :install => [:package] do
-  sudo = RUBY_PLATFORM =~ /win32/ ? '' : 'sudo'
-  gem  = RUBY_PLATFORM =~ /java/  ? 'jgem' : 'gem' 
-  sh %{#{sudo} #{gem} install --no-ri pkg/haml-#{File.read('VERSION').strip}}
-end
-
-desc "Release a new Haml package to Rubyforge. Requires the NAME and VERSION flags."
-task :release => [:package] do
-  name, version = ENV['NAME'], ENV['VERSION']
-  raise "Must supply NAME and VERSION for release task." unless name && version
-  sh %{rubyforge login}
-  sh %{rubyforge add_release haml haml "#{name} (v#{version})" pkg/haml-#{version}.gem}
-  sh %{rubyforge add_file    haml haml "#{name} (v#{version})" pkg/haml-#{version}.tar.gz}
-  sh %{rubyforge add_file    haml haml "#{name} (v#{version})" pkg/haml-#{version}.tar.bz2}
-  sh %{rubyforge add_file    haml haml "#{name} (v#{version})" pkg/haml-#{version}.zip}
-end
 
 # ----- Documentation -----
 
