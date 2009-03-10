@@ -8,11 +8,11 @@ module Haml
     def version
       return @@version if defined?(@@version)
 
-      numbers = File.read(scope('VERSION')).strip.split('.').map { |n| n.to_i }
+      config = YAML.load_file(scope('VERSION.yml'))
       @@version = {
-        :major => numbers[0],
-        :minor => numbers[1],
-        :teeny => numbers[2]
+        :major => config['major'],
+        :minor => config['minor'],
+        :teeny => config['patch']
       }
       @@version[:string] = [:major, :minor, :teeny].map { |comp| @@version[comp] }.compact.join('.')
 
