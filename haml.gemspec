@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{haml}
-  s.version = "2.1.0"
+  s.version = "2.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nathan Weizenbaum", "Hampton Catlin"]
-  s.date = %q{2009-03-05}
+  s.date = %q{2009-03-12}
   s.description = %q{Haml (HTML Abstraction Markup Language) is a layer on top of XHTML or XML that's designed to express the structure of XHTML or XML documents in a non-repetitive, elegant, easy way, using indentation rather than closing tags and allowing Ruby to be embedded with ease. It was originally envisioned as a plugin for Ruby on Rails, but it can function as a stand-alone templating engine.}
   s.email = %q{haml@googlegroups.com}
   s.executables = ["css2sass", "haml", "html2haml", "sass"]
